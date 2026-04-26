@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import type { GiftProduct } from '../data/giftProducts';
-import { formatPrice } from '../lib/formatPrice';
 
 const props = defineProps<{
   products: GiftProduct[];
@@ -42,9 +41,9 @@ function addSelected(): void {
       class="party-input min-h-14 flex-1"
       :disabled="!hasProducts"
     >
-      <option v-if="!hasProducts" value="">Все товары добавлены</option>
+      <option v-if="!hasProducts" value="">Все подарки уже добавлены</option>
       <option v-for="product in props.products" :key="product.id" :value="product.id">
-        {{ product.name }} - {{ formatPrice(product.price) }}
+        {{ product.name }}
       </option>
     </select>
     <button

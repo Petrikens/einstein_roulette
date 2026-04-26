@@ -194,6 +194,7 @@ textarea {
   overflow-wrap: normal;
   word-break: normal;
   hyphens: none;
+  word-break: break-all;
 }
 
 .wheel-rotor {

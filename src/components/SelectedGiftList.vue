@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { GiftProduct } from '../data/giftProducts';
-import { formatPrice } from '../lib/formatPrice';
 
 const props = defineProps<{
   products: GiftProduct[];
@@ -21,7 +20,6 @@ const emit = defineEmits<{
       >
         <div class="min-w-0">
           <p class="truncate text-sm font-black uppercase text-white">{{ product.name }}</p>
-          <p class="text-xs font-black text-[#ffe600]">{{ formatPrice(product.price) }}</p>
         </div>
         <button
           class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white text-xl font-black leading-none text-[#e82010] transition hover:bg-[#ffe600] focus:outline-none focus:ring-4 focus:ring-white/70"
@@ -33,5 +31,12 @@ const emit = defineEmits<{
         </button>
       </li>
     </ul>
+
+    <div
+      v-else
+      class="rounded-[1.5rem] border-[3px] border-white/70 bg-[#12162c]/70 px-4 py-5 text-center text-sm font-black uppercase text-white/80 shadow-[0_5px_0_rgba(0,0,0,0.18)]"
+    >
+      Список подарков пуст
+    </div>
   </div>
 </template>
