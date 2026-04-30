@@ -13,6 +13,7 @@ export function parseParticipants(input: string): WheelItem<ParticipantValue>[] 
     .map((name, sourceIndex) => ({
       id: `participant-${sourceIndex}`,
       label: name,
+      wheelLabel: String(sourceIndex + 1),
       weight: 1,
       value: { name, sourceIndex },
     }));

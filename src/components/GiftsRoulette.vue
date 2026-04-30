@@ -3,51 +3,56 @@ import { computed, ref } from 'vue';
 import GiftsModal from './GiftsModal.vue';
 import ResultModal from './ResultModal.vue';
 import Wheel from './Wheel.vue';
-import { giftProducts, giftWeight, type GiftProduct } from '../data/giftProducts';
+import WheelLegend from './WheelLegend.vue';
+import { giftProducts } from '../data/giftProducts';
+import {
+  appendAllGiftSelections,
+  appendGiftSelection,
+  buildGiftWheelItems,
+  createInitialGiftSelections,
+  mapSelectedGiftProducts,
+  removeGiftSelection,
+  type SelectedGiftProduct,
+} from '../lib/giftRoulette';
 import type { WheelItem } from '../types/wheel';
 
-const selectedIds = ref<string[]>(['book-relativity', 'coffee-kit', 'puzzle']);
-const winner = ref<WheelItem<GiftProduct> | null>(null);
+const uiText = {
+  editGifts: '\u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u043f\u043e\u0434\u0430\u0440\u043a\u0438',
+  empty: '\u041f\u0443\u0441\u0442\u043e',
+  resultTitle: '\u041f\u043e\u0434\u0430\u0440\u043e\u043a \u0432\u044b\u043f\u0430\u043b',
+  legendTitle: '\u041f\u043e\u0434\u0430\u0440\u043a\u0438',
+};
+
+const selectedGifts = ref(createInitialGiftSelections(giftProducts));
+const winner = ref<WheelItem<SelectedGiftProduct> | null>(null);
 const resultModalOpen = ref(false);
 const giftsModalOpen = ref(false);
 
 const selectedProducts = computed(() =>
-  selectedIds.value
-    .map((id) => giftProducts.find((product) => product.id === id))
-    .filter((product): product is GiftProduct => product !== undefined),
+  mapSelectedGiftProducts(selectedGifts.value, giftProducts),
 );
-
-const availableProducts = computed(() =>
-  giftProducts.filter((product) => !selectedIds.value.includes(product.id)),
-);
-
-const giftItems = computed<WheelItem<GiftProduct>[]>(() =>
-  selectedProducts.value.map((product) => ({
-    id: product.id,
+const giftLegendItems = computed(() =>
+  selectedProducts.value.map((product, index) => ({
+    id: product.selectionId,
+    number: index + 1,
     label: product.name,
-    weight: giftWeight(product.price),
-    value: product,
   })),
 );
 
-function addGift(productId: string): void {
-  if (selectedIds.value.includes(productId)) {
-    return;
-  }
+const giftItems = computed(() =>
+  buildGiftWheelItems(selectedGifts.value, giftProducts),
+);
 
-  selectedIds.value = [...selectedIds.value, productId];
+function addGift(productId: string): void {
+  selectedGifts.value = appendGiftSelection(selectedGifts.value, productId);
 }
 
 function addAllGifts(): void {
-  if (availableProducts.value.length === 0) {
-    return;
-  }
-
-  selectedIds.value = [...selectedIds.value, ...availableProducts.value.map((product) => product.id)];
+  selectedGifts.value = appendAllGiftSelections(selectedGifts.value, giftProducts);
 }
 
-function removeGift(productId: string): void {
-  selectedIds.value = selectedIds.value.filter((id) => id !== productId);
+function removeGift(selectionId: string): void {
+  selectedGifts.value = removeGiftSelection(selectedGifts.value, selectionId);
 }
 
 function handleSpinEnd(item: WheelItem): void {
@@ -59,22 +64,19 @@ function handleSpinEnd(item: WheelItem): void {
     || !('id' in product)
     || !('name' in product)
     || !('price' in product)
+    || !('selectionId' in product)
   ) {
     return;
   }
 
   winner.value = {
     ...item,
-    value: product as GiftProduct,
+    value: product as SelectedGiftProduct,
   };
   resultModalOpen.value = true;
 }
 
 function closeResultModal(): void {
-  if (winner.value) {
-    removeGift(winner.value.id);
-  }
-
   resultModalOpen.value = false;
   winner.value = null;
 }
@@ -92,7 +94,7 @@ function closeResultModal(): void {
              focus:outline-none focus:ring-2 focus:ring-white/50
              active:scale-95
              sm:right-6 sm:h-16 sm:w-16"
-      title="Редактировать подарки"
+      :title="uiText.editGifts"
       @click="giftsModalOpen = true"
     >
       <svg
@@ -119,23 +121,26 @@ function closeResultModal(): void {
 
     <Wheel
       :items="giftItems"
-      empty-text="Пусто"
+      :empty-text="uiText.empty"
       fullscreen
       :spin-duration-ms="6000"
       :extra-spins="10"
+      :shortcut-enabled="!giftsModalOpen && !resultModalOpen"
       @spin-end="handleSpinEnd"
     />
 
+    <WheelLegend :title="uiText.legendTitle" :items="giftLegendItems" />
+
     <ResultModal
       :open="resultModalOpen"
-      title="Подарок выпал"
+      :title="uiText.resultTitle"
       :result-label="winner?.label ?? ''"
       @close="closeResultModal"
     />
 
     <GiftsModal
       :open="giftsModalOpen"
-      :available-products="availableProducts"
+      :available-products="giftProducts"
       :selected-products="selectedProducts"
       @add="addGift"
       @add-all="addAllGifts"

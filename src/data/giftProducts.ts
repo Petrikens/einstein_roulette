@@ -5,16 +5,23 @@ export interface GiftProduct {
 }
 
 export const giftProducts: GiftProduct[] = [
-  { id: 'book-relativity', name: 'Книга о теории относительности', price: 1800 },
-  { id: 'smart-speaker', name: 'Умная колонка', price: 6990 },
-  { id: 'coffee-kit', name: 'Набор specialty кофе', price: 3200 },
-  { id: 'wireless-headphones', name: 'Беспроводные наушники', price: 11990 },
-  { id: 'desk-lamp', name: 'Настольная лампа', price: 4500 },
-  { id: 'online-course', name: 'Сертификат на онлайн-курс', price: 15900 },
-  { id: 'puzzle', name: 'Премиум-головоломка', price: 2400 },
-  { id: 'tablet', name: 'Планшет для заметок', price: 24990 },
+  { id: 'gift-02', name: '\u043c\u0430\u0433\u043d\u0438\u0442', price: 1 },
+  { id: 'gift-03', name: '\u043c\u0430\u0433\u043d\u0438\u0442 + \u0441\u0435\u0440\u0442\u0438\u0444\u0438\u043a\u0430\u0442 \u043d\u0430 \u0431\u0430\u0440', price: 6 },
+  { id: 'gift-04', name: '\u043c\u0430\u0433\u043d\u0438\u0442 + \u043d\u043e\u0441\u043a\u0438', price: 7 },
+  { id: 'gift-05', name: '\u043a\u0440\u0443\u0436\u043a\u0430 + \u043c\u0430\u0433\u043d\u0438\u0442', price: 9 },
+  { id: 'gift-06', name: '\u043a\u043e\u0432\u0440\u0438\u043a \u0434\u043b\u044f \u043c\u044b\u0448\u043a\u0438 + \u043c\u0430\u0433\u043d\u0438\u0442', price: 9 },
+  { id: 'gift-07', name: '\u0441\u0435\u0440\u0442\u0438\u0444\u0438\u043a\u0430\u0442 \u043d\u0430 \u0431\u0430\u0440 + \u043d\u043e\u0441\u043a\u0438', price: 11 },
+  { id: 'gift-08', name: '\u043c\u0430\u0433\u043d\u0438\u0442 + \u0441\u0435\u0440\u0442\u0438\u0444\u0438\u043a\u0430\u0442 \u043d\u0430 \u0431\u0430\u0440 + \u043d\u043e\u0441\u043a\u0438', price: 12 },
+  { id: 'gift-09', name: '\u0448\u043e\u043f\u043f\u0435\u0440 + \u043c\u0430\u0433\u043d\u0438\u0442', price: 13 },
+  { id: 'gift-10', name: '\u0448\u0430\u043c\u043f\u0430\u043d\u0441\u043a\u043e\u0435 + \u043c\u0430\u0433\u043d\u0438\u0442', price: 13 },
+  { id: 'gift-11', name: '\u0441\u0435\u0440\u0442\u0438\u0444\u0438\u043a\u0430\u0442 \u043d\u0430 \u0431\u0430\u0440 + \u043a\u043e\u0432\u0440\u0438\u043a \u0434\u043b\u044f \u043c\u044b\u0448\u043a\u0438', price: 13 },
+  { id: 'gift-12', name: '\u0441\u0435\u0440\u0442\u0438\u0444\u0438\u043a\u0430\u0442 \u043d\u0430 \u0431\u0430\u0440 + \u043a\u0440\u0443\u0436\u043a\u0430', price: 13 },
+  { id: 'gift-13', name: '\u043a\u0440\u0443\u0436\u043a\u0430 + \u043d\u043e\u0441\u043a\u0438', price: 14 },
+  { id: 'gift-14', name: '\u043a\u043e\u0432\u0440\u0438\u043a \u0434\u043b\u044f \u043c\u044b\u0448\u043a\u0438 + \u043d\u043e\u0441\u043a\u0438', price: 14 },
+  { id: 'gift-15', name: '\u043c\u0430\u0433\u043d\u0438\u0442 + \u043a\u0440\u0443\u0436\u043a\u0430 + \u0441\u0435\u0440\u0442\u0438\u0444\u0438\u043a\u0430\u0442 \u043d\u0430 \u0431\u0430\u0440', price: 14 },
+  { id: 'gift-16', name: '\u043c\u0430\u0433\u043d\u0438\u0442 + \u043a\u043e\u0432\u0440\u0438\u043a \u0434\u043b\u044f \u043c\u044b\u0448\u043a\u0438 + \u0441\u0435\u0440\u0442\u0438\u0444\u0438\u043a\u0430\u0442 \u043d\u0430 \u0431\u0430\u0440', price: 14 },
+  { id: 'gift-17', name: '\u043c\u0430\u0433\u043d\u0438\u0442 + \u043a\u0440\u0443\u0436\u043a\u0430 + \u043d\u043e\u0441\u043a\u0438', price: 15 },
+  { id: 'gift-18', name: '\u043a\u043e\u0432\u0440\u0438\u043a \u0434\u043b\u044f \u043c\u044b\u0448\u043a\u0438 + \u043a\u0440\u0443\u0436\u043a\u0430', price: 16 },
+  { id: 'gift-19', name: '\u0441\u0435\u0440\u0442\u0438\u0444\u0438\u043a\u0430\u0442 \u043d\u0430 \u0431\u0430\u0440 + \u0448\u0430\u043c\u043f\u0430\u043d\u0441\u043a\u043e\u0435', price: 17 },
+  { id: 'gift-20', name: '\u043d\u043e\u0441\u043a\u0438 + \u0448\u043e\u043f\u043f\u0435\u0440', price: 18 },
 ];
-
-export function giftWeight(price: number): number {
-  return 1 / Math.sqrt(price);
-}

@@ -1,11 +1,18 @@
-<!-- RouletteSection.vue -->
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import Wheel from './Wheel.vue';
-import ResultModal from './ResultModal.vue';
 import ParticipantsModal from './ParticipantsModal.vue';
+import ResultModal from './ResultModal.vue';
+import Wheel from './Wheel.vue';
+import WheelLegend from './WheelLegend.vue';
 import { parseParticipants } from '../lib/parseParticipants';
 import type { WheelItem } from '../types/wheel';
+
+const uiText = {
+  editParticipants: '\u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0443\u0447\u0430\u0441\u0442\u043d\u0438\u043a\u043e\u0432',
+  empty: '\u041f\u0443\u0441\u0442\u043e',
+  resultTitle: '\u041f\u043e\u0431\u0435\u0434\u0438\u0442\u0435\u043b\u044c',
+  legendTitle: '\u0423\u0447\u0430\u0441\u0442\u043d\u0438\u043a\u0438',
+};
 
 const input = ref('');
 const winner = ref<WheelItem | null>(null);
@@ -13,6 +20,13 @@ const resultModalOpen = ref(false);
 const participantsModalOpen = ref(false);
 
 const participantItems = computed(() => parseParticipants(input.value));
+const participantLegendItems = computed(() =>
+  participantItems.value.map((item, index) => ({
+    id: item.id,
+    number: index + 1,
+    label: item.label,
+  })),
+);
 
 function handleSpinEnd(item: WheelItem): void {
   winner.value = item;
@@ -21,11 +35,10 @@ function handleSpinEnd(item: WheelItem): void {
 
 function closeResultModal(): void {
   if (winner.value) {
-    const nextItems = participantItems.value.filter(
-      (item) => item.id !== winner.value?.id,
-    );
+    const nextItems = participantItems.value.filter((item) => item.id !== winner.value?.id);
     input.value = nextItems.map((item) => item.label).join('\n');
   }
+
   resultModalOpen.value = false;
   winner.value = null;
 }
@@ -33,10 +46,6 @@ function closeResultModal(): void {
 
 <template>
   <section class="relative min-h-screen">
-    <!-- 
-      Кнопка-иконка, зафиксированная справа по центру экрана.
-      На мобильных — внизу справа, чтобы не перекрывать колесо.
-    -->
     <button
       class="fixed right-4 top-1/2 z-50 -translate-y-1/2
              flex h-14 w-14 items-center justify-center
@@ -47,10 +56,9 @@ function closeResultModal(): void {
              focus:outline-none focus:ring-2 focus:ring-white/50
              active:scale-95
              sm:right-6 sm:h-16 sm:w-16"
-      title="Редактировать участников"
+      :title="uiText.editParticipants"
       @click="participantsModalOpen = true"
     >
-      <!-- Иконка списка пользователей -->
       <svg
         class="h-6 w-6 sm:h-7 sm:w-7"
         fill="none"
@@ -73,7 +81,6 @@ function closeResultModal(): void {
         />
       </svg>
 
-      <!-- Бейдж с количеством -->
       <span
         class="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center
                rounded-full bg-[#ffe600] text-[10px] font-black text-[#12162c]"
@@ -82,25 +89,25 @@ function closeResultModal(): void {
       </span>
     </button>
 
-    <!-- Колесо на весь экран -->
     <Wheel
       :items="participantItems"
-      empty-text="Пусто"
+      :empty-text="uiText.empty"
       fullscreen
       :spin-duration-ms="6000"
       :extra-spins="10"
+      :shortcut-enabled="!participantsModalOpen && !resultModalOpen"
       @spin-end="handleSpinEnd"
     />
 
-    <!-- Модалка результатов -->
+    <WheelLegend :title="uiText.legendTitle" :items="participantLegendItems" />
+
     <ResultModal
       :open="resultModalOpen"
-      title="Победитель"
+      :title="uiText.resultTitle"
       :result-label="winner?.label ?? ''"
       @close="closeResultModal"
     />
 
-    <!-- Модалка участников -->
     <ParticipantsModal
       v-model="input"
       :open="participantsModalOpen"
