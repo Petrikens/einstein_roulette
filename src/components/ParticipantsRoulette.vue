@@ -3,16 +3,19 @@ import { computed, ref } from 'vue';
 import ParticipantsModal from './ParticipantsModal.vue';
 import ResultModal from './ResultModal.vue';
 import Wheel from './Wheel.vue';
-import WheelLegend from './WheelLegend.vue';
 import { parseParticipants } from '../lib/parseParticipants';
+import { resolveWheelShortcutEnabled } from '../lib/wheelShortcut';
 import type { WheelItem } from '../types/wheel';
 
 const uiText = {
   editParticipants: '\u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0443\u0447\u0430\u0441\u0442\u043d\u0438\u043a\u043e\u0432',
   empty: '\u041f\u0443\u0441\u0442\u043e',
   resultTitle: '\u041f\u043e\u0431\u0435\u0434\u0438\u0442\u0435\u043b\u044c',
-  legendTitle: '\u0423\u0447\u0430\u0441\u0442\u043d\u0438\u043a\u0438',
 };
+
+const props = defineProps<{
+  isActive: boolean;
+}>();
 
 const input = ref('');
 const winner = ref<WheelItem | null>(null);
@@ -20,12 +23,8 @@ const resultModalOpen = ref(false);
 const participantsModalOpen = ref(false);
 
 const participantItems = computed(() => parseParticipants(input.value));
-const participantLegendItems = computed(() =>
-  participantItems.value.map((item, index) => ({
-    id: item.id,
-    number: index + 1,
-    label: item.label,
-  })),
+const shortcutEnabled = computed(() =>
+  resolveWheelShortcutEnabled(props.isActive, participantsModalOpen.value, resultModalOpen.value),
 );
 
 function handleSpinEnd(item: WheelItem): void {
@@ -95,11 +94,9 @@ function closeResultModal(): void {
       fullscreen
       :spin-duration-ms="6000"
       :extra-spins="10"
-      :shortcut-enabled="!participantsModalOpen && !resultModalOpen"
+      :shortcut-enabled="shortcutEnabled"
       @spin-end="handleSpinEnd"
     />
-
-    <WheelLegend :title="uiText.legendTitle" :items="participantLegendItems" />
 
     <ResultModal
       :open="resultModalOpen"

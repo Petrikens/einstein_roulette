@@ -233,14 +233,14 @@ watch(
   <div
     :class="[
       'flex flex-1 flex-col items-center justify-center',
-      fullscreen ? 'fixed inset-0 z-40 px-4 py-4 sm:px-6 sm:py-6' : '',
+      fullscreen ? 'fixed inset-0 z-40 px-3 py-3 sm:px-5 sm:py-5' : '',
     ]"
   >
     <div
       :class="[
         'relative aspect-square',
         fullscreen
-          ? 'w-full max-w-[min(94vw,86vh,64rem)]'
+          ? 'w-full max-w-[min(96vw,89vh,68rem)]'
           : 'w-full max-w-[min(82vw,34rem)] sm:max-w-[34rem]',
       ]"
     >
@@ -260,7 +260,7 @@ watch(
       </div>
 
       <div
-        class="absolute inset-3 rounded-full bg-white p-3 shadow-[0_18px_0_rgba(0,0,0,0.18),0_26px_60px_rgba(0,0,0,0.28)] sm:inset-4"
+        class="absolute inset-2 rounded-full bg-white p-2.5 shadow-[0_18px_0_rgba(0,0,0,0.18),0_26px_60px_rgba(0,0,0,0.28)] sm:inset-3 sm:p-3"
       >
         <svg
           class="h-full w-full overflow-visible"

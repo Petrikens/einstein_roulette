@@ -3,7 +3,6 @@ import { computed, ref } from 'vue';
 import GiftsModal from './GiftsModal.vue';
 import ResultModal from './ResultModal.vue';
 import Wheel from './Wheel.vue';
-import WheelLegend from './WheelLegend.vue';
 import { giftProducts } from '../data/giftProducts';
 import {
   appendAllGiftSelections,
@@ -14,14 +13,18 @@ import {
   removeGiftSelection,
   type SelectedGiftProduct,
 } from '../lib/giftRoulette';
+import { resolveWheelShortcutEnabled } from '../lib/wheelShortcut';
 import type { WheelItem } from '../types/wheel';
 
 const uiText = {
   editGifts: '\u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u043f\u043e\u0434\u0430\u0440\u043a\u0438',
   empty: '\u041f\u0443\u0441\u0442\u043e',
   resultTitle: '\u041f\u043e\u0434\u0430\u0440\u043e\u043a \u0432\u044b\u043f\u0430\u043b',
-  legendTitle: '\u041f\u043e\u0434\u0430\u0440\u043a\u0438',
 };
+
+const props = defineProps<{
+  isActive: boolean;
+}>();
 
 const selectedGifts = ref(createInitialGiftSelections(giftProducts));
 const winner = ref<WheelItem<SelectedGiftProduct> | null>(null);
@@ -31,12 +34,8 @@ const giftsModalOpen = ref(false);
 const selectedProducts = computed(() =>
   mapSelectedGiftProducts(selectedGifts.value, giftProducts),
 );
-const giftLegendItems = computed(() =>
-  selectedProducts.value.map((product, index) => ({
-    id: product.selectionId,
-    number: index + 1,
-    label: product.name,
-  })),
+const shortcutEnabled = computed(() =>
+  resolveWheelShortcutEnabled(props.isActive, giftsModalOpen.value, resultModalOpen.value),
 );
 
 const giftItems = computed(() =>
@@ -125,11 +124,9 @@ function closeResultModal(): void {
       fullscreen
       :spin-duration-ms="6000"
       :extra-spins="10"
-      :shortcut-enabled="!giftsModalOpen && !resultModalOpen"
+      :shortcut-enabled="shortcutEnabled"
       @spin-end="handleSpinEnd"
     />
-
-    <WheelLegend :title="uiText.legendTitle" :items="giftLegendItems" />
 
     <ResultModal
       :open="resultModalOpen"

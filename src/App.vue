@@ -47,8 +47,14 @@ const activeScreen = ref<Screen>('participants');
       </nav>
 
       <div class="flex flex-1">
-        <ParticipantsRoulette v-if="activeScreen === 'participants'" />
-        <GiftsRoulette v-else />
+        <ParticipantsRoulette
+          v-show="activeScreen === 'participants'"
+          :is-active="activeScreen === 'participants'"
+        />
+        <GiftsRoulette
+          v-show="activeScreen === 'gifts'"
+          :is-active="activeScreen === 'gifts'"
+        />
       </div>
     </div>
   </main>
