@@ -11,9 +11,7 @@ export const giftProducts: GiftProduct[] = [
   { id: 'gift-04', name: 'Коврик', price: 7 },
   { id: 'gift-05', name: 'Носки', price: 6 },
   { id: 'gift-06', name: 'Носки + сертификат', price: 11 },
-  { id: 'gift-07', name: 'Шампанское', price: 12 },
-  { id: 'gift-8', name: 'Шоппер', price: 12 },
-  { id: 'gift-9', name: 'Сертификат + магнит', price: 6 },
-  { id: 'gift-10', name: 'Носки + магнит', price: 7 },
-  { id: 'gift-11', name: 'Шампанское + магнит', price: 13 },
+  { id: 'gift-7', name: 'Шоппер', price: 12 },
+  { id: 'gift-8', name: 'Сертификат + магнит', price: 6 },
+  { id: 'gift-9', name: 'Носки + магнит', price: 7 },
 ];
